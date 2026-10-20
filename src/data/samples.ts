@@ -1,8 +1,8 @@
-/* Пик — данные демо-версии: сигналы, типы моментов и примеры стримов.
+/* Сигналы, типы моментов и примеры стримов.
    Примеры вымышленные: так выглядит результат обработки. */
-window.PEAK = window.PEAK || {};
+import type { Kind, KindId, Sample, Signal } from "../types";
 
-PEAK.SIGNALS = [
+export const SIGNALS: Signal[] = [
   { id: "voice",  name: "Голос",   hint: "крик, смех, смена тона", group: "Стример" },
   { id: "face",   name: "Эмоции",  hint: "шок и смех на камере",   group: "Стример" },
   { id: "words",  name: "Слова",   hint: "ключевые фразы в речи",  group: "Стример" },
@@ -11,7 +11,7 @@ PEAK.SIGNALS = [
   { id: "clips",  name: "Клипы",   hint: "клипы, которые сделали зрители", group: "Зрители" }
 ];
 
-PEAK.KINDS = {
+export const KINDS: Record<KindId, Kind> = {
   shock: { label: "Шок",     a: "#7C3AED", b: "#FF3D71" },
   laugh: { label: "Смех",    a: "#FF5A1F", b: "#FFB23D" },
   win:   { label: "Победа",  a: "#0EA5A4", b: "#3B82F6" },
@@ -21,7 +21,7 @@ PEAK.KINDS = {
   burst: { label: "Всплеск", a: "#FF5A1F", b: "#FF3D71" }
 };
 
-PEAK.SAMPLES = [
+export const SAMPLES: Sample[] = [
   {
     id: "horror",
     title: "Хоррор до утра: проходим вслепую",

@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+/* Тёмная тема в духе ночного стрима: глубокий синий и оранжевый «пик». */
+@theme {
+  --color-bg: #0a0d16;
+  --color-bg-2: #0f1320;
+  --color-surface: #141a2b;
+  --color-surface-2: #1a2135;
+  --color-line: #232b42;
+  --color-line-2: #36405e;
+  --color-ink: #eef1f7;
+  --color-soft: #c3cadb;
+  --color-muted: #8c95ab;
+  --color-dim: #4d5670;
+  --color-accent: #ff5a1f;
+  --color-accent-2: #ff9a3d;
+  --color-accent-ink: #160803;
+  --color-good: #3ddc97;
+  --color-warn: #f4d2b4;
+  --color-error: #ff8a7a;
+
+  --font-display: "Unbounded", "Arial Black", system-ui, sans-serif;
+  --font-sans: "Golos Text", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+
+  --animate-rise: rise 0.5s ease both;
+  --animate-pop: pop 6s ease infinite both;
+  --animate-word: word 0.25s ease both;
+  --animate-drift: drift 9s ease-in-out infinite alternate;
+  --animate-spin-slow: spin 0.8s linear infinite;
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes pop {
+    0%, 8% { opacity: 0; transform: translateY(8px) scale(0.96); }
+    14%, 70% { opacity: 1; transform: none; }
+    80%, 100% { opacity: 0; transform: translateY(-6px); }
+  }
+  @keyframes word {
+    from { transform: scale(0.7); opacity: 0; }
+    to { transform: none; opacity: 1; }
+  }
+  @keyframes drift {
+    to { transform: translate(14%, -10%) scale(1.15); }
+  }
+}
+
+@layer base {
+  html { scroll-behavior: smooth; color-scheme: dark; }
+  body { @apply bg-bg text-ink font-sans antialiased; }
+  h1, h2, h3 { text-wrap: balance; }
+  :focus-visible { outline: 2px solid var(--color-accent-2); outline-offset: 2px; }
+}
+
+@utility container-page {
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-left: max(20px, env(safe-area-inset-left, 0px));
+  padding-right: max(20px, env(safe-area-inset-right, 0px));
+}
+
+@utility text-gradient {
+  background: linear-gradient(90deg, var(--color-accent), var(--color-accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility bg-brand {
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-2));
+}
+
+@utility subs-shadow {
+  text-shadow: 0 3px 0 rgb(0 0 0 / 0.35), 0 0 24px rgb(0 0 0 / 0.4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition: none !important; }
+  html { scroll-behavior: auto; }
+}
