@@ -1,6 +1,6 @@
-import { useEffect, useState, type ChangeEvent } from "react";
+import { useState, type ChangeEvent } from "react";
 import { parseChat } from "../lib/analyzer";
-import { ru } from "../lib/format";
+import { plural, ru } from "../lib/format";
 import type { ChatMessage } from "../types";
 
 export interface OwnInput {
@@ -19,11 +19,11 @@ function Drop(props: { id: string; title: string; optional?: boolean; note: stri
   return (
     <label
       htmlFor={props.id}
-      className={`grid cursor-pointer gap-1 rounded-2xl border border-dashed p-[18px] transition-colors hover:border-accent hover:bg-accent/5 ${
+      className={`grid cursor-pointer gap-1 rounded-2xl border border-dashed p-[18px] transition-colors hover:border-accent hover:bg-accent/5 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-accent-2 ${
         props.ok ? "border-accent bg-accent/5" : "border-line-2"
       }`}
     >
-      <input id={props.id} type="file" accept={props.accept} className="hidden" onChange={props.onChange} />
+      <input id={props.id} type="file" accept={props.accept} className="sr-only" onChange={props.onChange} />
       <b className="text-[15px]">
         {props.title}
         {props.optional && <em className="ml-1.5 text-[13px] font-normal not-italic text-muted">необязательно</em>}
@@ -39,10 +39,9 @@ export function OwnStream({ onRun, onSampleChat }: Props) {
   const [video, setVideo] = useState<{ url: string; name: string; dur: number } | null>(null);
   const [error, setError] = useState("");
 
-  useEffect(() => () => { if (video) URL.revokeObjectURL(video.url); }, [video]);
-
   const onChat = async (e: ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
+    e.target.value = ""; // чтобы повторный выбор того же файла тоже сработал
     if (!f) return;
     try {
       const msgs = parseChat(await f.text());
@@ -57,7 +56,9 @@ export function OwnStream({ onRun, onSampleChat }: Props) {
 
   const onVideo = (e: ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
+    e.target.value = "";
     if (!f) return;
+    // Прежнюю ссылку на файл не отзываем: по ней ещё могут играть шорты уже найденных моментов.
     const url = URL.createObjectURL(f);
     const v = document.createElement("video");
     v.preload = "metadata";
@@ -87,7 +88,11 @@ export function OwnStream({ onRun, onSampleChat }: Props) {
             title="Чат стрима"
             accept=".json,.txt,.log"
             ok={Boolean(chat)}
-            note={chat ? `${chat.name} · ${ru(chat.msgs.length)} сообщений` : "JSON или TXT из TwitchDownloader"}
+            note={
+              chat
+                ? `${chat.name} · ${ru(chat.msgs.length)} ${plural(chat.msgs.length, "сообщение", "сообщения", "сообщений")}`
+                : "JSON или TXT из TwitchDownloader"
+            }
             onChange={onChat}
           />
           <Drop

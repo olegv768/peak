@@ -29,7 +29,8 @@ export function RunSection({ job, onOpen }: Props) {
     ref.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     const total = job.stages.reduce((a, s) => a + s.ms, 0);
     const t0 = performance.now();
-    let raf = 0;
+    // Таймер, а не requestAnimationFrame: в фоновой вкладке rAF стоит, и обработка не доходила бы до конца.
+    let timer = 0;
     const tick = () => {
       const el = skip.current ? total : performance.now() - t0;
       let acc = 0;
@@ -46,15 +47,16 @@ export function RunSection({ job, onOpen }: Props) {
       setSteps(st);
       setReveal(rv);
       setShown(cut);
-      if (el < total) raf = requestAnimationFrame(tick);
-      else {
+      if (el >= total) {
+        window.clearInterval(timer);
         setReveal(Object.fromEntries(SIGNALS.map((s) => [s.id, 1])));
         setShown(job.moments.length);
         setDone(true);
       }
     };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+    timer = window.setInterval(tick, 33);
+    tick();
+    return () => window.clearInterval(timer);
   }, [job]);
 
   const n = job.moments.length;

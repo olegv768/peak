@@ -57,7 +57,7 @@ export function parseChat(text: string): ChatMessage[] {
       .map((c) => ({
         t: Number(c.content_offset_seconds ?? c.offset ?? c.time ?? c.t),
         u: String(c.commenter?.name ?? c.commenter?.display_name ?? c.commenter?._id ?? c.user ?? c.name ?? c.author ?? "?"),
-        b: String(typeof c.message === "object" ? c.message?.body ?? "" : c.message ?? c.text ?? c.body ?? ""),
+        b: String(c.message && typeof c.message === "object" ? c.message.body ?? "" : c.message ?? c.text ?? c.body ?? ""),
       }))
       .filter((m) => Number.isFinite(m.t))
       .sort((a, b) => a.t - b.t);
