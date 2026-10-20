@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Пик — лучшие моменты стрима в шорты</title>
+<meta name="description" content="Пик сам находит лучшие моменты стрима по голосу и эмоциям стримера, его словам, чату, донатам и клипам зрителей и режет их в вертикальные шорты.">
+<meta name="theme-color" content="#0A0D16">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230A0D16'/%3E%3Crect x='6' y='18' width='4' height='8' rx='1' fill='%2346516E'/%3E%3Crect x='14' y='5' width='4' height='21' rx='1' fill='%23FF5A1F'/%3E%3Crect x='22' y='15' width='4' height='11' rx='1' fill='%2346516E'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Golos+Text:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="logo" href="#top" aria-label="Пик — на главную">Пик<span>.</span></a>
+    <nav class="nav-links">
+      <a href="#how">Как это работает</a>
+      <a href="#own">Свой стрим</a>
+    </nav>
+    <span class="badge">Демо-версия</span>
+  </div>
+</header>
+
+<main id="top">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="glow" aria-hidden="true"></div>
+    <div class="wrap hero-in">
+      <div class="hero-copy">
+        <p class="eyebrow">Шорты из стрима без монтажёра</p>
+        <h1>Лучшие моменты стрима — <em>в шорты.</em> Сами.</h1>
+        <p class="lead">Пик слушает стримера, видит его эмоции, читает чат и донаты. Там, где совпали все сигналы, он находит момент и режет его в вертикальное видео с субтитрами.</p>
+
+        <form class="link-form" id="linkForm" novalidate>
+          <label class="sr" for="linkInput">Ссылка на запись стрима</label>
+          <input id="linkInput" type="url" inputmode="url" autocomplete="off" placeholder="Ссылка на запись: twitch.tv/videos/…">
+          <button class="btn btn-primary" type="submit">Найти моменты</button>
+        </form>
+        <p class="form-error" id="linkError" hidden></p>
+
+        <div class="samples">
+          <span class="samples-label">Нет ссылки? Попробуйте на примере:</span>
+          <div class="samples-row" id="sampleChips"></div>
+        </div>
+      </div>
+
+      <div class="hero-visual" aria-hidden="true">
+        <div class="phone"><div class="phone-screen" id="heroShort"></div></div>
+        <ul class="floating">
+          <li style="--d:0s">Голос: крик</li>
+          <li style="--d:.6s">Эмоции: шок</li>
+          <li style="--d:1.2s">Чат: 312 зрителей за 10 с</li>
+          <li style="--d:1.8s">41 клип от зрителей</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- RUN: processing + results -->
+  <section class="run" id="run" hidden>
+    <div class="wrap">
+      <div class="run-head">
+        <div>
+          <p class="eyebrow" id="runEyebrow">Обработка</p>
+          <h2 id="runTitle">—</h2>
+          <p class="run-meta" id="runMeta"></p>
+        </div>
+        <button class="btn btn-ghost" id="skipBtn" type="button">Пропустить</button>
+      </div>
+      <p class="notice" id="runNotice" hidden></p>
+
+      <div class="panel">
+        <ol class="steps" id="steps"></ol>
+        <div class="timeline">
+          <div class="lane-labels" id="laneLabels"></div>
+          <div class="lane-canvas">
+            <canvas id="timeline" aria-label="Сигналы по всему стриму"></canvas>
+            <div class="tl-axis" id="tlAxis"></div>
+          </div>
+        </div>
+        <p class="tl-hint">Один сигнал врёт: стример крикнул просто так, чат заспамил бот. Подсвечены места, где совпало несколько сигналов.</p>
+      </div>
+
+      <div class="results" id="results" hidden>
+        <div class="results-head">
+          <h3 id="resultsTitle">Готовые шорты</h3>
+          <p class="muted">Наведите, чтобы посмотреть. Нажмите, чтобы открыть.</p>
+        </div>
+        <div class="shorts" id="shorts"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW -->
+  <section class="how" id="how">
+    <div class="wrap">
+      <p class="eyebrow">Как это работает</p>
+      <h2>Момент — там, где совпали все сигналы</h2>
+      <div class="how-grid">
+        <div class="how-col">
+          <h3>Стример</h3>
+          <ul class="sig-list">
+            <li><b>Голос</b><span>крик, смех, резкая смена тона</span></li>
+            <li><b>Эмоции на камере</b><span>удивление, шок, смех</span></li>
+            <li><b>Слова</b><span>«не может быть», «смотрите», «я в шоке»</span></li>
+          </ul>
+        </div>
+        <div class="how-core"><span>Пик</span><small>находит момент<br>и режет шорт 9:16</small></div>
+        <div class="how-col">
+          <h3>Зрители</h3>
+          <ul class="sig-list">
+            <li><b>Чат</b><span>сколько разных зрителей пишут: «АХАХА», «ОГО»</span></li>
+            <li><b>Донаты</b><span>когда пришёл донат и что в сообщении</span></li>
+            <li><b>Клипы</b><span>что зрители сами вырезали на Twitch</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="how-steps">
+        <div><span>1</span><b>Ссылка</b><p>Вставляете ссылку на запись стрима.</p></div>
+        <div><span>2</span><b>Сигналы</b><p>Пик разбирает видео, звук, чат и донаты.</p></div>
+        <div><span>3</span><b>Шорты</b><p>Получаете вертикальные ролики с субтитрами.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OWN STREAM -->
+  <section class="own" id="own">
+    <div class="wrap own-in">
+      <div>
+        <p class="eyebrow">Работает по-настоящему</p>
+        <h2>Проверьте на своём стриме</h2>
+        <p class="lead">Загрузите чат записи, и Пик найдёт моменты прямо в браузере: файлы никуда не отправляются. Добавьте запись, и каждый момент можно будет сразу посмотреть вертикально.</p>
+        <p class="muted small">В этой версии работает сигнал чата. Голос, эмоции, слова, донаты и клипы — в полной версии. Чат Twitch скачивается программой TwitchDownloader в формате JSON или TXT.</p>
+      </div>
+      <div class="own-box">
+        <label class="drop" for="chatFile">
+          <input id="chatFile" type="file" accept=".json,.txt,.log">
+          <b>Чат стрима</b>
+          <span id="chatName">JSON или TXT из TwitchDownloader</span>
+        </label>
+        <label class="drop" for="videoFile">
+          <input id="videoFile" type="file" accept="video/*">
+          <b>Запись стрима <em>необязательно</em></b>
+          <span id="videoName">MP4, чтобы смотреть моменты</span>
+        </label>
+        <button class="btn btn-primary btn-wide" id="ownBtn" type="button" disabled>Найти моменты</button>
+        <p class="form-error" id="ownError" hidden></p>
+        <div class="own-alt">
+          <button class="btn-link" id="sampleChatBtn" type="button">Нет файла? Проверить на примере чата</button>
+          <a class="btn-link" href="assets/sample-chat.txt" download>Скачать пример чата</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-in">
+    <span class="logo logo-sm">Пик<span>.</span></span>
+    <span>Idea Battle · Волосов Олег</span>
+    <span class="muted">Демо-версия: примеры стримов вымышленные</span>
+  </div>
+</footer>
+
+<!-- Modal -->
+<div class="modal" id="modal" hidden>
+  <div class="modal-back" data-close></div>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <button class="modal-x" type="button" data-close aria-label="Закрыть">×</button>
+    <div class="modal-short" id="mShort"></div>
+    <div class="modal-info">
+      <p class="eyebrow" id="mKind"></p>
+      <h3 id="mTitle"></h3>
+      <p class="mono muted" id="mTime"></p>
+      <h4>Почему этот момент</h4>
+      <p id="mWhy"></p>
+      <div class="sig-chips" id="mSignals"></div>
+      <h4>Что писал чат</h4>
+      <div class="quotes" id="mChat"></div>
+      <div class="modal-actions">
+        <button class="btn btn-primary" type="button" data-stub="Скачивание">Скачать MP4</button>
+        <button class="btn btn-ghost" type="button" data-stub="Публикация в TikTok">В TikTok</button>
+        <button class="btn btn-ghost" type="button" data-stub="Публикация в Shorts">В Shorts</button>
+        <button class="btn btn-ghost" type="button" data-stub="Публикация в Reels">В Reels</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script src="assets/data.js"></script>
+<script src="assets/analyzer.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
