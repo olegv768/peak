@@ -33,8 +33,7 @@ npm run preview    # посмотреть собранный сайт
 
 ## Публикация
 
-При каждом пуше в `main` GitHub Actions собирает сайт и публикует его на GitHub Pages (`.github/workflows/deploy.yml`).
-Один раз включить: **Settings → Pages → Source: GitHub Actions**. Адрес: `https://olegv768.github.io/peak/`.
+Сайт публикуется на Vercel: каждый пуш в `main` собирается и выкладывается автоматически.
 
 ## Структура
 
