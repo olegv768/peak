@@ -65,7 +65,7 @@ h2 { font-size: clamp(28px, 4vw, 44px); line-height: 1.1; font-weight: 700; }
 .nav-links a { text-decoration: none; color: var(--muted); font-size: 14px; }
 .nav-links a:hover { color: var(--ink); }
 .badge { font: 600 11px/1 var(--f-body); letter-spacing: .1em; text-transform: uppercase; color: var(--accent-2); border: 1px solid rgba(255, 154, 61, .35); border-radius: 999px; padding: 7px 10px; }
-@media (max-width: 640px) { .nav-links { display: none; } .badge { margin-left: auto; } }
+@media (max-width: 640px) { .nav-links { display: none; } }
 
 /* hero */
 .hero { position: relative; overflow: hidden; padding: 72px 0 96px; }

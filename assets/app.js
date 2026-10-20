@@ -1,4 +1,4 @@
-/* Пик — интерфейс демо-версии. */
+/* Пик — интерфейс. */
 (function () {
   "use strict";
   const $ = (id) => document.getElementById(id);
@@ -93,7 +93,7 @@
       const arr = TL.lanes && TL.lanes[s.id];
       if (!arr) {
         g.fillStyle = "#3A4462"; g.font = "11px 'JetBrains Mono', monospace"; g.textAlign = "left"; g.textBaseline = "alphabetic";
-        g.fillText("в полной версии", 6, base - 10);
+        g.fillText("скоро", 6, base - 10);
         return;
       }
       const lim = Math.floor((TL.reveal[s.id] || 0) * B);
@@ -215,7 +215,7 @@
   $("modal").addEventListener("click", (ev) => {
     if (ev.target.closest("[data-close]")) closeModal();
     const stub = ev.target.closest("[data-stub]");
-    if (stub) toast(`${stub.dataset.stub} появится в полной версии. Сейчас это демо.`);
+    if (stub) toast(`${stub.dataset.stub} скоро будет доступно.`);
   });
   document.addEventListener("keydown", (ev) => { if (ev.key === "Escape" && !$("modal").hidden) closeModal(); });
 
@@ -312,7 +312,7 @@
   function runSample(sample, notice) {
     const moments = [...sample.moments].sort((a, b) => a.t - b.t);
     run({
-      eyebrow: notice ? "Демо по ссылке" : "Пример стрима",
+      eyebrow: notice ? "Пример результата" : "Пример стрима",
       title: sample.title,
       meta: `@${sample.streamer} · ${sample.platform} · ${sample.category} · ${fmt(sample.duration)} · до ${sample.peakViewers.toLocaleString("ru-RU")} зрителей`,
       notice,
@@ -350,7 +350,7 @@
     }
     err.hidden = true;
     const sample = PEAK.SAMPLES[hash(url.href) % PEAK.SAMPLES.length];
-    runSample(sample, `Это демо-версия: загрузка стрима по ссылке появится в полной версии. Сейчас показываем, как будет выглядеть результат, на примере стрима «${sample.title}».`);
+    runSample(sample, `Загрузка стрима по ссылке скоро заработает. Пока показываем, как будет выглядеть результат, на примере стрима «${sample.title}».`);
   });
 
   /* ---------- own stream (real chat analysis) ---------- */
