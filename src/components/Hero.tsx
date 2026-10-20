@@ -2,14 +2,17 @@ import { useState, type FormEvent } from "react";
 import { SAMPLES } from "../data/samples";
 import { fmtDuration } from "../lib/format";
 import { ShortCard } from "./ShortCard";
+import { SignalScene } from "./SignalScene";
+import { Tilt } from "./Tilt";
 
 const HOSTS = /(^|\.)(twitch\.tv|vkplay\.live|vkplay\.ru|live\.vkvideo\.ru|vkvideo\.ru|vk\.com|youtube\.com|youtu\.be|kick\.com|rutube\.ru)$/i;
 
+/* Метки сигналов «выступают» из экрана телефона на разную глубину. */
 const FLOATING = [
-  { text: "Голос: крик", pos: "left-0 top-[12%]", delay: "0s" },
-  { text: "Эмоции: шок", pos: "right-0 top-[30%]", delay: ".6s" },
-  { text: "Чат: 312 зрителей за 10 с", pos: "-left-[4%] bottom-[26%]", delay: "1.2s" },
-  { text: "41 клип от зрителей", pos: "bottom-[9%] right-[2%]", delay: "1.8s" },
+  { text: "Голос: крик", pos: "-left-[30%] top-[14%]", z: 90, delay: "0s" },
+  { text: "Эмоции: шок", pos: "-right-[26%] top-[32%]", z: 60, delay: ".6s" },
+  { text: "Чат: 312 зрителей за 10 с", pos: "-left-[46%] bottom-[30%]", z: 120, delay: "1.2s" },
+  { text: "41 клип от зрителей", pos: "-right-[30%] bottom-[12%]", z: 80, delay: "1.8s" },
 ];
 
 interface Props {
@@ -40,18 +43,27 @@ export function Hero({ onSample, onLink }: Props) {
   };
 
   return (
-    <section className="relative overflow-hidden pb-24 pt-18">
+    <section className="relative isolate flex min-h-[min(100svh,900px)] items-center overflow-hidden">
+      <SignalScene />
+      {/* затемнение под текстом и снизу, чтобы 3D-сцена не спорила с заголовком */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -right-[10%] -top-[20%] size-[900px] bg-[radial-gradient(closest-side,rgb(255_90_31/0.22),transparent_70%)]"
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,var(--color-bg)_0%,rgb(10_13_22/0.9)_32%,rgb(10_13_22/0.35)_62%,rgb(10_13_22/0.1)_100%)] max-lg:bg-[linear-gradient(180deg,rgb(10_13_22/0.55)_0%,rgb(10_13_22/0.85)_45%,var(--color-bg)_100%)]"
       />
-      <div className="container-page relative grid items-center gap-14 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,0.9fr)]">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-bg to-transparent" />
+
+      <div className="container-page relative grid w-full items-center gap-16 py-20 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
         <div>
-          <p className="mb-3.5 text-xs font-semibold uppercase tracking-[0.16em] text-accent">Шорты из стрима без монтажёра</p>
-          <h1 className="font-display text-[clamp(36px,5.6vw,66px)] font-extrabold leading-[1.04] tracking-tight">
-            Лучшие моменты стрима — <em className="text-gradient not-italic">в шорты.</em> Сами.
+          <p className="mb-6 flex items-center gap-3 text-sm text-soft">
+            <span className="h-px w-10 bg-accent" />
+            Шорты из стрима без монтажёра
+          </p>
+          <h1 className="font-display text-[clamp(40px,6vw,76px)] font-extrabold leading-[0.98] tracking-[-0.035em]">
+            Лучшие моменты стрима <span className="text-accent">в&nbsp;шорты.</span>
+            <br />
+            Сами.
           </h1>
-          <p className="mt-[18px] max-w-[56ch] text-lg text-soft">
+          <p className="mt-7 max-w-[52ch] text-lg leading-relaxed text-soft">
             Пик слушает стримера, видит его эмоции, читает чат и донаты. Там, где совпали все сигналы, он находит момент и режет его в
             вертикальное видео с субтитрами.
           </p>
@@ -59,7 +71,7 @@ export function Hero({ onSample, onLink }: Props) {
           <form
             onSubmit={submit}
             noValidate
-            className="mt-8 flex max-w-[620px] flex-col gap-2.5 rounded-2xl border border-line bg-surface p-2 focus-within:border-accent/60 focus-within:shadow-[0_0_0_4px_rgb(255_90_31/0.12)] sm:flex-row"
+            className="mt-10 flex max-w-[600px] flex-col gap-2 rounded-[18px] border border-white/10 bg-surface/70 p-2 shadow-[0_30px_60px_-30px_rgb(0_0_0/0.9)] backdrop-blur-xl focus-within:border-accent/60 sm:flex-row"
           >
             <label htmlFor="link" className="sr-only">
               Ссылка на запись стрима
@@ -72,53 +84,58 @@ export function Hero({ onSample, onLink }: Props) {
               value={value}
               onChange={(e) => setValue(e.target.value)}
               placeholder="Ссылка на запись: twitch.tv/videos/…"
-              className="min-w-0 flex-1 bg-transparent px-3 py-3 text-base text-ink placeholder:text-[#5d667e] focus-visible:outline-none sm:py-0"
+              className="min-w-0 flex-1 bg-transparent px-4 py-3 text-base text-ink placeholder:text-[#5d667e] focus-visible:outline-none sm:py-0"
             />
             <button
               type="submit"
-              className="bg-brand whitespace-nowrap rounded-xl px-[22px] py-[15px] text-[15px] font-semibold text-accent-ink shadow-[0_10px_30px_-10px_rgb(255_90_31/0.7)] transition hover:brightness-105 active:translate-y-px"
+              className="whitespace-nowrap rounded-xl bg-accent px-6 py-4 text-[15px] font-semibold text-accent-ink transition hover:bg-accent-2 active:translate-y-px"
             >
               Найти моменты
             </button>
           </form>
-          {error && <p className="mt-2.5 text-sm text-error">{error}</p>}
+          {error && <p className="mt-3 text-sm text-error">{error}</p>}
 
-          <div className="mt-[22px]">
-            <span className="text-sm text-muted">Нет ссылки? Попробуйте на примере:</span>
-            <div className="mt-2.5 flex flex-wrap gap-2">
-              {SAMPLES.map((s, i) => (
-                <button
-                  key={s.id}
-                  type="button"
-                  onClick={() => onSample(i)}
-                  className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3.5 py-2 text-sm font-medium hover:border-accent"
-                >
-                  {s.category}
-                  <small className="text-xs text-muted">{fmtDuration(s.duration)}</small>
-                </button>
-              ))}
-            </div>
+          <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+            <span className="text-muted">Или пример:</span>
+            {SAMPLES.map((s, i) => (
+              <button
+                key={s.id}
+                type="button"
+                onClick={() => onSample(i)}
+                className="group inline-flex items-baseline gap-2 border-b border-white/15 pb-0.5 font-medium transition-colors hover:border-accent hover:text-accent"
+              >
+                {s.category}
+                <small className="font-mono text-xs text-muted group-hover:text-accent/70">{fmtDuration(s.duration)}</small>
+              </button>
+            ))}
           </div>
         </div>
 
-        <div className="relative flex justify-center" aria-hidden="true">
-          <div className="aspect-[9/19] w-[min(240px,62vw)] rounded-[42px] bg-[linear-gradient(160deg,#2a3250,#11162a)] p-2.5 shadow-[0_40px_80px_-30px_rgb(0_0_0/0.8),inset_0_0_0_1px_#2c3554] lg:w-[min(300px,70vw)]">
-            <div className="h-full overflow-hidden rounded-[33px]">
-              <ShortCard moment={hero.moments[0]} ctx={{ streamer: hero.streamer }} fill autoPlay />
+        <div className="relative hidden justify-center sm:flex" aria-hidden="true">
+          <Tilt max={16} className="animate-float">
+            <div className="relative [transform-style:preserve-3d]">
+              <div className="aspect-[9/19] w-[min(280px,62vw)] rounded-[44px] bg-[linear-gradient(160deg,#323b5c,#10142a)] p-2.5 shadow-[0_60px_100px_-40px_rgb(0_0_0/0.95),inset_0_0_0_1px_#36405f]">
+                <div className="h-full overflow-hidden rounded-[35px]">
+                  <ShortCard moment={hero.moments[0]} ctx={{ streamer: hero.streamer }} fill autoPlay />
+                </div>
+              </div>
+              {FLOATING.map((f) => (
+                <div
+                  key={f.text}
+                  className={`absolute ${f.pos} pointer-events-none`}
+                  style={{ transform: `translateZ(${f.z}px)` }}
+                >
+                  <div
+                    style={{ animationDelay: f.delay }}
+                    className="animate-pop whitespace-nowrap rounded-xl border border-white/10 bg-surface/80 py-2.5 pl-8 pr-4 text-[13px] font-semibold shadow-[0_20px_40px_-20px_rgb(0_0_0/0.9)] backdrop-blur-md"
+                  >
+                    <span className="absolute left-3.5 top-1/2 -mt-1 size-2 rounded-full bg-accent shadow-[0_0_12px_var(--color-accent)]" />
+                    {f.text}
+                  </div>
+                </div>
+              ))}
             </div>
-          </div>
-          <ul className="pointer-events-none absolute inset-0 hidden sm:block">
-            {FLOATING.map((f) => (
-              <li
-                key={f.text}
-                style={{ animationDelay: f.delay }}
-                className={`absolute ${f.pos} animate-pop whitespace-nowrap rounded-full border border-line bg-surface/85 py-[9px] pl-[30px] pr-3.5 text-[13px] font-semibold backdrop-blur-md`}
-              >
-                <span className="absolute left-[13px] top-1/2 -mt-1 size-2 rounded-full bg-accent shadow-[0_0_10px_var(--color-accent)]" />
-                {f.text}
-              </li>
-            ))}
-          </ul>
+          </Tilt>
         </div>
       </div>
     </section>

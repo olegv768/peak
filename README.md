@@ -22,7 +22,7 @@
 
 ## Стек
 
-Vite, React, TypeScript, Tailwind CSS.
+Vite, React, TypeScript, Tailwind CSS, three.js (3D-сцена на первом экране).
 
 ```bash
 npm install

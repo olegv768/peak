@@ -3,6 +3,7 @@ import { SIGNALS } from "../data/samples";
 import { fmtTime, plural } from "../lib/format";
 import type { Job, Moment, SignalId } from "../types";
 import { ShortCard } from "./ShortCard";
+import { Tilt } from "./Tilt";
 import { Timeline } from "./Timeline";
 
 interface Props {
@@ -66,7 +67,7 @@ export function RunSection({ job, onOpen }: Props) {
       <div className="container-page">
         <div className="flex flex-wrap items-end justify-between gap-5">
           <div>
-            <p className="mb-3.5 text-xs font-semibold uppercase tracking-[0.16em] text-accent">{job.eyebrow}</p>
+            <p className="mb-5 flex items-center gap-3 text-sm text-soft"><span className="h-px w-10 bg-accent" />{job.eyebrow}</p>
             <h2 className="font-display text-[clamp(24px,3.2vw,34px)] font-bold leading-tight tracking-tight">{job.title}</h2>
             <p className="mt-2.5 text-[15px] text-muted">{job.meta}</p>
           </div>
@@ -127,7 +128,9 @@ export function RunSection({ job, onOpen }: Props) {
             <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-[22px]">
               {job.moments.map((m, k) => (
                 <div key={`${job.id}-${k}`} className="flex animate-rise flex-col gap-3" style={{ animationDelay: `${k * 70}ms` }}>
-                  <ShortCard moment={m} ctx={job.ctx} onOpen={() => onOpen(m)} label={`Открыть момент ${k + 1}: ${m.title}`} />
+                  <Tilt max={12} glare>
+                    <ShortCard moment={m} ctx={job.ctx} onOpen={() => onOpen(m)} label={`Открыть момент ${k + 1}: ${m.title}`} />
+                  </Tilt>
                   <div>
                     <b className="block text-[15px] leading-snug">
                       {k + 1}. {m.title}
