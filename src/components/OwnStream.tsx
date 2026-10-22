@@ -71,7 +71,7 @@ export function OwnStream({ onRun, onSampleChat }: Props) {
     <section id="own" className="scroll-mt-16 border-t border-line bg-bg-2 py-24">
       <div className="container-page grid items-start gap-12 md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
         <div>
-          <p className="mb-6 flex items-center gap-3 text-sm text-soft"><span className="h-px w-10 bg-accent" />Работает по-настоящему</p>
+          <p className="mb-3 text-sm font-semibold text-accent">Работает по-настоящему</p>
           <h2 className="font-display text-[clamp(28px,4vw,44px)] font-bold leading-[1.1] tracking-tight">Проверьте на своём стриме</h2>
           <p className="mt-[18px] max-w-[56ch] text-lg text-soft">
             Загрузите чат записи, и Пик найдёт моменты прямо в браузере: файлы никуда не отправляются. Добавьте запись, и каждый момент

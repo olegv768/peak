@@ -19,10 +19,7 @@ export function How() {
     <section id="how" className="relative scroll-mt-16 overflow-hidden py-28">
       <div className="container-page grid items-center gap-16 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
         <div>
-          <p className="mb-6 flex items-center gap-3 text-sm text-soft">
-            <span className="h-px w-10 bg-accent" />
-            Как это работает
-          </p>
+          <p className="mb-3 text-sm font-semibold text-accent">Как это работает</p>
           <h2 className="font-display text-[clamp(30px,4.2vw,52px)] font-bold leading-[1.02] tracking-[-0.03em]">
             Момент — там, где совпали все сигналы
           </h2>

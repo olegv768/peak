@@ -54,18 +54,19 @@ export function Hero({ onSample, onLink }: Props) {
 
       <div className="container-page relative grid w-full items-center gap-16 py-20 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
         <div>
-          <p className="mb-6 flex items-center gap-3 text-sm text-soft">
-            <span className="h-px w-10 bg-accent" />
-            Шорты из стрима без монтажёра
-          </p>
+          <a
+            href="#features"
+            className="mb-7 inline-flex items-center gap-2 rounded-full border border-white/10 bg-surface/60 py-1.5 pl-1.5 pr-4 text-sm text-soft backdrop-blur-md transition hover:border-accent/50"
+          >
+            <span className="rounded-full bg-accent px-2.5 py-0.5 text-xs font-semibold text-accent-ink">Новое</span>
+            Моменты по реакции чата, донатам и клипам
+          </a>
           <h1 className="font-display text-[clamp(40px,6vw,76px)] font-extrabold leading-[0.98] tracking-[-0.035em]">
-            Лучшие моменты стрима <span className="text-accent">в&nbsp;шорты.</span>
-            <br />
-            Сами.
+            Шорты из стрима. <span className="text-accent">Автоматически.</span>
           </h1>
-          <p className="mt-7 max-w-[52ch] text-lg leading-relaxed text-soft">
-            Пик слушает стримера, видит его эмоции, читает чат и донаты. Там, где совпали все сигналы, он находит момент и режет его в
-            вертикальное видео с субтитрами.
+          <p className="mt-7 max-w-[50ch] text-lg leading-relaxed text-soft">
+            Вставьте ссылку на запись — Пик найдёт лучшие моменты по реакции стримера и зрителей и сделает вертикальные видео с
+            субтитрами для TikTok, Reels и Shorts.
           </p>
 
           <form
@@ -94,6 +95,7 @@ export function Hero({ onSample, onLink }: Props) {
             </button>
           </form>
           {error && <p className="mt-3 text-sm text-error">{error}</p>}
+          <p className="mt-3 text-sm text-muted">1 стрим в месяц бесплатно · без монтажёра · без установки</p>
 
           <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
             <span className="text-muted">Или пример:</span>

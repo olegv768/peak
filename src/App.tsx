@@ -1,14 +1,15 @@
 import { useCallback, useRef, useState } from "react";
-import { Audience } from "./components/Audience";
-import { ChatTicker } from "./components/ChatTicker";
-import { FinalCta } from "./components/FinalCta";
+import { Faq } from "./components/Faq";
+import { Features } from "./components/Features";
 import { Hero } from "./components/Hero";
 import { How } from "./components/How";
 import { OwnStream, type OwnInput } from "./components/OwnStream";
 import { RunSection } from "./components/RunSection";
+import { Platforms } from "./components/Platforms";
+import { Pricing } from "./components/Pricing";
 import { ShortModal } from "./components/ShortModal";
-import { Problem } from "./components/Problem";
-import { Versus } from "./components/Versus";
+import { SiteFooter } from "./components/SiteFooter";
+import { UseCases } from "./components/UseCases";
 import { SAMPLES } from "./data/samples";
 import { analyzeChat, makeSampleChat } from "./lib/analyzer";
 import { fmtTime, hash, ru } from "./lib/format";
@@ -81,15 +82,29 @@ export default function App() {
 
   return (
     <>
-      <header className="sticky top-0 z-20 border-b border-line/60 bg-bg/70 backdrop-blur-lg">
-        <div className="container-page flex h-16 items-center gap-7">
+      <header className="sticky top-0 z-30 border-b border-line/60 bg-bg/75 backdrop-blur-lg">
+        <div className="container-page flex h-16 items-center gap-8">
           <a href="#top" className="font-display text-2xl font-extrabold tracking-tight no-underline" aria-label="Пик — на главную">
             Пик<span className="text-accent">.</span>
           </a>
-          <nav className="ml-auto hidden gap-[22px] text-sm text-muted sm:flex">
-            <a href="#how" className="hover:text-ink">Как это работает</a>
-            <a href="#own" className="hover:text-ink">Свой стрим</a>
+          <nav className="hidden gap-7 text-sm text-soft md:flex">
+            <a href="#features" className="hover:text-ink">Возможности</a>
+            <a href="#how" className="hover:text-ink">Как работает</a>
+            <a href="#pricing" className="hover:text-ink">Тарифы</a>
+            <a href="#faq" className="hover:text-ink">Вопросы</a>
           </nav>
+          <div className="ml-auto flex items-center gap-2">
+            <button type="button" onClick={() => notify("Вход скоро будет доступен.")} className="hidden rounded-xl px-4 py-2 text-sm font-medium text-soft hover:text-ink sm:block">
+              Войти
+            </button>
+            <a
+              href="#top"
+              onClick={() => window.setTimeout(() => document.getElementById("link")?.focus(), 400)}
+              className="rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-accent-ink transition hover:bg-accent-2"
+            >
+              Попробовать бесплатно
+            </a>
+          </div>
         </div>
       </header>
 
@@ -105,11 +120,10 @@ export default function App() {
           }}
         />
         {job && <RunSection key={job.id} job={job} onOpen={(m) => setOpen({ moment: m, ctx: job.ctx })} />}
-        <ChatTicker />
-        <Problem />
-        <Audience />
-        <Versus />
+        <Platforms />
+        <Features />
         <How />
+        <UseCases />
         <OwnStream
           onRun={runOwn}
           onSampleChat={() => {
@@ -117,17 +131,11 @@ export default function App() {
             runOwn({ msgs: s.msgs, name: "Пример чата: 3-часовой стрим", videoUrl: null, videoDur: 0 });
           }}
         />
-        <FinalCta onSample={() => runSample(SAMPLES[0])} />
+        <Pricing notify={notify} />
+        <Faq />
       </main>
 
-      <footer className="border-t border-line pb-[calc(28px+env(safe-area-inset-bottom,0px))] pt-7 text-sm">
-        <div className="container-page flex flex-wrap items-center gap-x-7 gap-y-3">
-          <span className="font-display text-lg font-extrabold">
-            Пик<span className="text-accent">.</span>
-          </span>
-          <span className="text-muted">Idea Battle · Волосов Олег</span>
-        </div>
-      </footer>
+      <SiteFooter />
 
       {open && <ShortModal moment={open.moment} ctx={open.ctx} onClose={closeModal} notify={notify} />}
 
