@@ -15,6 +15,7 @@
   --color-accent: #ff5a1f;
   --color-accent-2: #ff9a3d;
   --color-accent-ink: #160803;
+  --color-yellow: #ffe14d;
   --color-good: #3ddc97;
   --color-warn: #f4d2b4;
   --color-error: #ff8a7a;
@@ -29,6 +30,7 @@
   --animate-drift: drift 9s ease-in-out infinite alternate;
   --animate-spin-slow: spin 0.8s linear infinite;
   --animate-float: float 7s ease-in-out infinite;
+  --animate-marquee: marquee 38s linear infinite;
 
   @keyframes rise {
     from { opacity: 0; transform: translateY(14px); }
@@ -45,6 +47,9 @@
   }
   @keyframes drift {
     to { transform: translate(14%, -10%) scale(1.15); }
+  }
+  @keyframes marquee {
+    to { transform: translateX(-50%); }
   }
   @keyframes float {
     0%, 100% { translate: 0 0; }

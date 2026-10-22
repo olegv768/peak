@@ -1,9 +1,14 @@
 import { useCallback, useRef, useState } from "react";
+import { Audience } from "./components/Audience";
+import { ChatTicker } from "./components/ChatTicker";
+import { FinalCta } from "./components/FinalCta";
 import { Hero } from "./components/Hero";
 import { How } from "./components/How";
 import { OwnStream, type OwnInput } from "./components/OwnStream";
 import { RunSection } from "./components/RunSection";
 import { ShortModal } from "./components/ShortModal";
+import { Problem } from "./components/Problem";
+import { Versus } from "./components/Versus";
 import { SAMPLES } from "./data/samples";
 import { analyzeChat, makeSampleChat } from "./lib/analyzer";
 import { fmtTime, hash, ru } from "./lib/format";
@@ -100,6 +105,10 @@ export default function App() {
           }}
         />
         {job && <RunSection key={job.id} job={job} onOpen={(m) => setOpen({ moment: m, ctx: job.ctx })} />}
+        <ChatTicker />
+        <Problem />
+        <Audience />
+        <Versus />
         <How />
         <OwnStream
           onRun={runOwn}
@@ -108,6 +117,7 @@ export default function App() {
             runOwn({ msgs: s.msgs, name: "Пример чата: 3-часовой стрим", videoUrl: null, videoDur: 0 });
           }}
         />
+        <FinalCta onSample={() => runSample(SAMPLES[0])} />
       </main>
 
       <footer className="border-t border-line pb-[calc(28px+env(safe-area-inset-bottom,0px))] pt-7 text-sm">
